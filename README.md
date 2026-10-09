@@ -1,17 +1,61 @@
-# FastAPI + React Template
+# LibraryNest
 
-FastAPI backend + Vite/React/TypeScript frontend, deployed to Vercel as one project.
+A library management app for students and librarians: discover books, manage book records, and submit and track loan requests. Built with a FastAPI REST API, a React + TypeScript frontend, and MySQL.
 
-```
-backend/    FastAPI app (routes under /api)
+> **Status:** planning. The design docs are in [`docs/`](https://github.com/Adi1ba/LibraryNest/tree/main/docs); the app code is still being developed from the starter template.
+
+## Features
+
+**MVP** (demo before mid-term)
+
+* Create, list, view, update and delete book records through REST APIs
+* Search and browse books
+* Submit and manage book loan requests
+* View and track loan request status
+* Input validation with clear error responses
+* Interactive API docs at `/docs`
+
+**Beta** (demo before final)
+
+* Sign up and log in with secure authentication
+* User profiles: view and update profile information
+* Roles: `student`, `librarian` and `admin`
+* Role-Based Access Control (RBAC): restrict operations according to user roles and permissions
+* Librarian operations: manage books and handle loan requests
+* Admin operations: manage users and administrative access
+* Security: password hashing, protected endpoints and permission checks
+
+## Tech stack
+
+| **Part**    | **Choice**                                |
+| ----------- | ----------------------------------------- |
+| Backend     | Python, FastAPI                           |
+| Database    | MySQL                                     |
+| Frontend    | React + TypeScript + Vite                 |
+| API         | RESTful APIs                              |
+| Beta extras | JWT authentication, pwdlib (Argon2), RBAC |
+
+## Documentation
+
+| **Doc**                                                                                                     | **What it covers**                                                              |
+| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| [PRD — Product Requirements Document](https://github.com/Adi1ba/LibraryNest/blob/main/docs/01-prd.md)       | Goals, features, user stories and milestones                                    |
+| [SRS — Software Requirements Specification](https://github.com/Adi1ba/LibraryNest/blob/main/docs/02-srs.md) | Functional and non-functional requirements, permissions and acceptance criteria |
+| [TDD — Technical Design Document](https://github.com/Adi1ba/LibraryNest/blob/main/docs/03-tdd.md)           | Architecture, data model, API endpoints, authentication and security design     |
+
+## Project structure
+
+```text
+backend/    FastAPI app and REST API endpoints
 frontend/   Vite + React + TypeScript
-vercel.json Vercel setup: /api/* goes to backend, everything else to frontend
+docs/       PRD, SRS and TDD
 ```
 
 ## Requirements
 
-- [Python](https://www.python.org/downloads/) 3.10+
-- [Node.js](https://nodejs.org/) 22+
+* [Python](https://www.python.org/downloads/) 3.10+
+* [Node.js](https://nodejs.org/) 22+
+* [MySQL](https://dev.mysql.com/downloads/)
 
 > On macOS/Linux, use `python3` instead of `python`.
 
@@ -22,7 +66,7 @@ vercel.json Vercel setup: /api/* goes to backend, everything else to frontend
 ```bash
 cd backend
 python -m venv .venv
-.venv\Scripts\Activate.ps1      # macOS/Linux: source .venv/bin/activate
+.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 fastapi dev main.py
 ```
@@ -35,38 +79,41 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173 and click **Say hello**. Vite forwards `/api` requests to the backend on port 8000.
+Open the local development URL displayed by Vite, usually http://localhost:5173.
 
-To run it the way Vercel does instead, from the project root:
+API docs: http://localhost:8000/docs.
 
-```bash
-npm install -g vercel
-vercel dev -L
-```
+Make sure MySQL is running and the database connection is configured before starting the backend.
 
 > Add new Python packages to `backend/requirements.txt`.
 
-## Class exercise
+## Environment variables
 
-Send an ID, name and email from React to FastAPI and show the reply.
+Configure the database connection and application settings using environment variables or a local `.env` file, according to the backend configuration.
 
-1. In `backend/main.py`, uncomment the `EXERCISE (part 1)` block. Try `POST /api/user` at http://localhost:8000/docs.
-2. In `frontend/src/App.tsx`, uncomment `<UserForm />` and the `UserForm` function (`EXERCISE (part 2)`).
-3. Fill in the form at http://localhost:5173 and click **Send**.
+| **Variable**              | **Needed for** | **Notes**                                                      |
+| ------------------------- | -------------- | -------------------------------------------------------------- |
+| MySQL connection settings | MVP            | Configure the database name, host, port, username and password |
+| `JWT_SECRET`              | Beta           | Use a long, randomly generated secret for token signing        |
+| Authentication settings   | Beta           | Configure token expiry and other security settings as required |
 
-Try an invalid email (send it from `/docs`, since the browser blocks it in the form): FastAPI returns `422` without any extra code.
+Never commit secrets or `.env` files. Keep local configuration separate from the code repository.
 
 ## Deploy to Vercel
 
-1. Push the repo to GitHub.
-2. Go to https://vercel.com/new, import the repo and click **Deploy**. Keep **Root Directory** as `./`.
+1. Push the repository to GitHub.
+2. Open [Vercel](https://vercel.com/new) and import the repository.
+3. Configure the frontend and backend deployment settings, environment variables and production database connection.
 
-Every push to `main` redeploys automatically. Or deploy from your machine with `vercel --prod`.
+Deployment depends on the repository's Vercel configuration and the hosting requirements of the FastAPI backend and MySQL database.
 
-## Troubleshooting
+## Contributing
 
-- **"Running scripts is disabled" in PowerShell:** run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`.
-- **`fastapi` not found:** activate the virtual environment first.
-- **`Request failed: 500` in the app:** the backend isn't running.
-- **App at localhost:8000 shows an old version:** delete `frontend/dist`.
-- **Vercel build fails:** check **Build Logs** in the Vercel dashboard, and make sure `npm run build` works in `frontend/`.
+Every change starts from a GitHub issue. Follow the repository's contribution conventions:
+
+* Create a feature branch for each issue.
+* Use clear, descriptive commit messages.
+* Open one pull request per issue.
+* Include `Closes #issue_number` in the pull request description to link and close the issue after merging.
+
+
